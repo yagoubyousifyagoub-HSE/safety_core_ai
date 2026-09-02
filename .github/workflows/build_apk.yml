@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 1. Checkout Code
+      - name: 1. Checkout Repository
         uses: actions/checkout@v4
 
       - name: 2. Setup Java 17
@@ -25,21 +25,41 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: 4. Create Android Shell Only
+      - name: 4. Extract Project Archive
         run: |
-          # إنشاء هيكل أندرويد في مجلد مؤقت ثم نقل مجلد android فقط
-          flutter create temp_app --platforms=android --org com.safetycore.ai
-          cp -r temp_app/android ./
-          rm -rf temp_app
+          # فك ضغط أي ملف zip تم رفعه من الهاتف
+          if ls *.zip 1> /dev/null 2>&1; then
+            echo "Zip file found, extracting..."
+            mkdir -p extracted_files
+            unzip -o *.zip -d extracted_files/
+            
+            # تحديد مجلد المشروع الداخلي ونقل محتوياته للمسار الرئيسي
+            PROJECT_ROOT=$(find extracted_files -type f -name "pubspec.yaml" -exec dirname {} \;)
+            if [ -n "$PROJECT_ROOT" ]; then
+              echo "Moving project from $PROJECT_ROOT to root..."
+              cp -rf "$PROJECT_ROOT"/* ./
+            fi
+            rm -rf extracted_files
+          fi
 
-      - name: 5. Fetch Dependencies
+      - name: 5. Ensure Android Platform Exists
+        run: |
+          # إنشاء مجلد نظام أندرويد إن لم يكن متوفراً داخل ملف الـ zip
+          if [ ! -d "android" ]; then
+            echo "Generating android scaffolding..."
+            flutter create temp_shell --platforms=android --org com.safetycore.ai
+            cp -r temp_shell/android ./
+            rm -rf temp_shell
+          fi
+
+      - name: 6. Install Dependencies
         run: flutter pub get
 
-      - name: 6. Build Android APK
+      - name: 7. Build Android Release APK
         run: flutter build apk --release --no-tree-shake-icons
 
-      - name: 7. Upload APK
+      - name: 8. Upload Generated APK
         uses: actions/upload-artifact@v4
         with:
-          name: SafetyCoreAI-Release
+          name: SafetyCoreAI-Full-Release
           path: build/app/outputs/flutter-apk/app-release.apk
