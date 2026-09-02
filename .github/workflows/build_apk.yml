@@ -37,6 +37,11 @@ jobs:
               cp -rf "$PROJECT_ROOT"/* ./
             fi
             rm -rf extracted_files
+            # تطبيق أي ملفات تم تعديلها في GitHub فوق ملفات الـ zip القديمة
+            git checkout HEAD -- lib/ || true
+          fi
+
+            rm -rf extracted_files
           fi
 
       - name: 5. Ensure Android Platform Exists
