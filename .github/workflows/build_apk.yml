@@ -25,17 +25,20 @@ jobs:
           channel: 'stable'
           cache: true
 
-      # هذه الخطوة تنشئ ملفات نظام أندرويد الناقصة تلقائياً
-      - name: 4. Scaffold Android Project
-        run: flutter create . --platforms=android
+      - name: 4. Create Android Shell Only
+        run: |
+          # إنشاء هيكل أندرويد في مجلد مؤقت ثم نقل مجلد android فقط
+          flutter create temp_app --platforms=android --org com.safetycore.ai
+          cp -r temp_app/android ./
+          rm -rf temp_app
 
-      - name: 5. Get Dependencies
+      - name: 5. Fetch Dependencies
         run: flutter pub get
 
-      - name: 6. Build Android Release APK
+      - name: 6. Build Android APK
         run: flutter build apk --release --no-tree-shake-icons
 
-      - name: 7. Upload APK Artifact
+      - name: 7. Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SafetyCoreAI-Release
