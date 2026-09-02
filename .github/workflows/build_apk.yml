@@ -44,6 +44,8 @@ jobs:
             cp -r safety_core_ai/android ./
             rm -rf safety_core_ai
           fi
+          # تعديل اسم التطبيق على شاشة الهاتف تلقائياً
+          sed -i 's/android:label="[^"]*"/android:label="Safety Core AI"/g' android/app/src/main/AndroidManifest.xml
 
       - name: 6. Install Dependencies
         run: |
