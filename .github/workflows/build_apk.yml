@@ -40,9 +40,9 @@ jobs:
       - name: 5. Ensure Android Platform Exists
         run: |
           if [ ! -d "android" ]; then
-            flutter create temp_shell --platforms=android --org com.safetycore.ai
-            cp -r temp_shell/android ./
-            rm -rf temp_shell
+            flutter create safety_core_ai --platforms=android --org com.safetycore.ai
+            cp -r safety_core_ai/android ./
+            rm -rf safety_core_ai
           fi
 
       - name: 6. Install Dependencies
