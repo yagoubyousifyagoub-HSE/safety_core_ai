@@ -3,7 +3,7 @@ name: Build Safety Core AI APK
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch: # يتيح لك تشغيل البناء يدوياً بضغطة زر
+  workflow_dispatch:
 
 jobs:
   build:
@@ -25,13 +25,17 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: 4. Get Dependencies
+      # هذه الخطوة تنشئ ملفات نظام أندرويد الناقصة تلقائياً
+      - name: 4. Scaffold Android Project
+        run: flutter create . --platforms=android
+
+      - name: 5. Get Dependencies
         run: flutter pub get
 
-      - name: 5. Build Android Release APK
+      - name: 6. Build Android Release APK
         run: flutter build apk --release --no-tree-shake-icons
 
-      - name: 6. Upload APK Artifact
+      - name: 7. Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: SafetyCoreAI-Release
