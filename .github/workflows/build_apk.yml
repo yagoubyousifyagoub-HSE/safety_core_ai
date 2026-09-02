@@ -27,13 +27,10 @@ jobs:
 
       - name: 4. Extract Project Archive
         run: |
-          # فك ضغط أي ملف zip تم رفعه من الهاتف
           if ls *.zip 1> /dev/null 2>&1; then
             echo "Zip file found, extracting..."
             mkdir -p extracted_files
             unzip -o *.zip -d extracted_files/
-            
-            # تحديد مجلد المشروع الداخلي ونقل محتوياته للمسار الرئيسي
             PROJECT_ROOT=$(find extracted_files -type f -name "pubspec.yaml" -exec dirname {} \;)
             if [ -n "$PROJECT_ROOT" ]; then
               echo "Moving project from $PROJECT_ROOT to root..."
@@ -44,7 +41,6 @@ jobs:
 
       - name: 5. Ensure Android Platform Exists
         run: |
-          # إنشاء مجلد نظام أندرويد إن لم يكن متوفراً داخل ملف الـ zip
           if [ ! -d "android" ]; then
             echo "Generating android scaffolding..."
             flutter create temp_shell --platforms=android --org com.safetycore.ai
@@ -53,7 +49,9 @@ jobs:
           fi
 
       - name: 6. Install Dependencies
-        run: flutter pub get
+        run: |
+          sed -i 's/intl:.*/intl: any/g' pubspec.yaml
+          flutter pub get
 
       - name: 7. Build Android Release APK
         run: flutter build apk --release --no-tree-shake-icons
