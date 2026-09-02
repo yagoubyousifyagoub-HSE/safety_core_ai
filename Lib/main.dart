@@ -15,7 +15,10 @@ class SafetyCoreApp extends StatelessWidget {
       title: 'Safety Core AI',
       debugShowCheckedModeBanner: false,
       locale: const Locale('ar', 'SA'),
-      supportedLocales: const [Locale('ar', 'SA'), Locale('en', 'US')],
+      supportedLocales: const [
+        Locale('ar', 'SA'),
+        Locale('en', 'US'),
+      ],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -54,11 +57,19 @@ class AboutAppScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10),
-            const Icon(Icons.health_and_safety_rounded, size: 70, color: Color(0xFF0284C7)),
+            const Icon(
+              Icons.health_and_safety_rounded,
+              size: 70,
+              color: Color(0xFF0284C7),
+            ),
             const SizedBox(height: 10),
             const Text(
               'Safety Core AI',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF0F172A),
+              ),
             ),
             const SizedBox(height: 20),
             Container(
@@ -70,11 +81,18 @@ class AboutAppScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                  Text('المصمم والمشرف الهندسي:', style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  Text(
+                    'المصمم والمشرف الهندسي:',
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
                   SizedBox(height: 4),
                   Text(
                     'HSE Engineer: Yagoub Mohamed',
-                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -83,12 +101,17 @@ class AboutAppScreen extends StatelessWidget {
             ElevatedButton.icon(
               onPressed: () => _openPayPal(context),
               icon: const Icon(Icons.favorite, color: Colors.redAccent),
-              label: const Text('Support via PayPal (@yagoupyo)', style: TextStyle(fontWeight: FontWeight.bold)),
+              label: const Text(
+                'Support via PayPal (@yagoupyo)',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF0070BA),
                 foregroundColor: Colors.white,
                 minimumSize: const Size.fromHeight(50),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ],
